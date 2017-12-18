@@ -152,23 +152,14 @@ function Game() {
 
         if (self.isIWin()){
             console.log("You win!");
-        } else {
-            console.log("You lose!");
         }
     };
 
     // return symbol of user who win, or 0 if draw
     self.isIWin = function() {
-
         let grid = self.User.grid;
-
-        // X
-        let mySimbol = self.User.simbol;
-
-        let isWin = false;
-
         // 1) check rows
-        if(checkRows(grid)) return true
+        if(self.checkRows(grid)) return true
 
         // 2) check columns
         let tempArr = [[],[],[]];
@@ -177,19 +168,24 @@ function Game() {
             tempArr[[1]].push(arr[1]);
             tempArr[[2]].push(arr[2]);
         });
-        if(checkRows(tempArr)) return true;
+        if(self.checkRows(tempArr)) return true;
         // 3) check diag
         let left_count  = 0,right_count = 2, diagTemp = [[],[]];
         grid.map(arr => {
             diagTemp[[0]].push(arr[left_count++]);
             diagTemp[[1]].push(arr[right_count--]);
         });
-        if(checkRows(diagTemp)) return true;
+        if(self.checkRows(diagTemp)) return true;
+
+        return false;
 
     };
     self.checkRows = function (temp) {
-        return temp.map(arr => arr.filter(el => el == self.User.simbol))
-            filter(arr => arr.length == 3).length >= 1 ? true : false;
+
+        let mySimbol = self.User.simbol;
+        if(temp.map(arr => arr.filter(el => el == self.User.simbol))
+            .filter(arr => arr.length == 3).length >= 1) return true;
+        else return false;
     }
 
 

@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Tic-Tac-Toe (game)</title>
+    <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+
+    <script type="text/javascript" >
+    const socket = io();
+    socket.on('connection', (User) =>{
+        new game.Mouse(User);
+    });
+    socket.on('message', (data) => {
+        game.User.name = data.name;
+        game.User.simbol = data.simbol;
+        game.User.color = data.color;
+        game.User.id = data.id;
+        game.User.userState = data.step;
+        game.User.enemyState = !game.User.userState;
+    });
+    socket.on('click', (user) => {
+        game.setData(
+            user, user.data, user.positionOnBlock
+        );
+    });
+    </script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+</body>
+
+</html>

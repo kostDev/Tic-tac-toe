@@ -128,23 +128,70 @@ function Game() {
     }
 
     self.checkToWin = function() {
+
         let count = i = 0;
+
+        // clear grid
         self.User.grid = [
             [],
             [],
             []
         ];
-        self.User.blocksPosition.map((data, index) => {
-            if (count != 3) {
-                self.User.grid[[i]].push(data.userSet)
+
+        // setup grid
+        self.User.blocksPosition.map((data) => {
+            if (count !== 3) {
+                self.User.grid[[i]].push(data.userSet);
+
             } else {
-                self.User.grid[[++i]].push(data.userSet)
+                self.User.grid[[++i]].push(data.userSet);
                 count = 0;
             }
             count++;
         });
-    
+
+        if (self.isIWin()){
+            console.log("You win!");
+        } else {
+            console.log("You lose!");
+        }
+    };
+
+    // return symbol of user who win, or 0 if draw
+    self.isIWin = function() {
+
+        let grid = self.User.grid;
+
+        // X
+        let mySimbol = self.User.simbol;
+
+        let isWin = false;
+
+        // 1) check rows
+        if(checkRows(grid)) return true
+
+        // 2) check columns
+        let tempArr = [[],[],[]];
+        grid.map(arr => {
+            tempArr[[0]].push(arr[0]);
+            tempArr[[1]].push(arr[1]);
+            tempArr[[2]].push(arr[2]);
+        });
+        if(checkRows(tempArr)) return true;
+        // 3) check diag
+        let left_count  = 0,right_count = 2, diagTemp = [[],[]];
+        grid.map(arr => {
+            diagTemp[[0]].push(arr[left_count++]);
+            diagTemp[[1]].push(arr[right_count--]);
+        });
+        if(checkRows(diagTemp)) return true;
+
+    };
+    self.checkRows = function (temp) {
+        return temp.map(arr => arr.filter(el => el == self.User.simbol))
+            filter(arr => arr.length == 3).length >= 1 ? true : false;
     }
+
 
     self.Mouse = function(User) {
 

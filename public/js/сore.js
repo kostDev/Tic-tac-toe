@@ -120,7 +120,7 @@ const Draw = {
             } else {
                 Draw.text(100, 25, "#9D4671", "You Lose!", "25pt");
             }
-
+            User.gameEnd = true;
         }
     }
 }
@@ -139,11 +139,10 @@ function Update() {
     }
     Draw.online(20, 20, "10pt", '#CA6811', Online);
 
-    if (!Draw.win(winArr) || User.gameEnd) {
+    if (!Draw.win(winArr)) {
         setTimeout(function() {
             requestAnimationFrame(Update);
         }, 1000 / 2);
-        User.gameEnd = true;
     }
 }
 
@@ -216,7 +215,7 @@ window.addEventListener("click", () => {
     let step = Logic.checkingPosition(data);
     // if user pressed in other place - pros will be 10
     // and checking step is empty(0) or not(1)
-    if (User.isMove && step < 9 && !Grid.storage[step].isChecked) {
+    if (User.isMove && step < 9 && !Grid.storage[step].isChecked && !User.gameEnd) {
         Grid.set(step, User.simbol, User.color);
         User.isMove = false;
         User.step = step;

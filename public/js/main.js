@@ -1,25 +1,11 @@
-//create Game -- 'User1','X','#52FF37'
-//                        Name, simbol, color
-
-let game = new Game();
-// add MouseListener
-game.Mouse(game.User);
-game.Update();
-
-// let positionMouse = {};
-
-// canvas.addEventListener('click', () => {
-//     positionMouse = {
-//         x: window.event.clientX - canvas.getBoundingClientRect().left,
-//         y: window.event.clientY - canvas.getBoundingClientRect().top
-//     };
-//     socket.emit('click', positionMouse);
-// });
-
-// socket.on("click", (event) => {
-//     console.log(event);
-//     ctx.strokeStyle = "green";
-//     // x - rect.left, y - rect.top 
-//     ctx.rect(event.x, event.y, 50, 50);
-//     ctx.stroke();
-// });
+// set size of canvas
+canvas.width = 420;
+canvas.height = 450;
+// get link on context
+const CTX = canvas.getContext('2d');
+// set size of game blocks
+const BLOCK_W = BLOCK_H = 125;
+// font style for all game;
+const Font_Style = " Calibri";
+// use game Update function
+Update();

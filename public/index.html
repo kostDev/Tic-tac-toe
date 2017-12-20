@@ -13,24 +13,31 @@
 
     <script type="text/javascript" >
     const socket = io();
-    socket.on('connection', (User) =>{
-        new game.Mouse(User);
+
+    socket.on('connection', (count) =>{
+        // new game.Mouse(User);
+        Online = count;
     });
-    socket.on('message', (data) => {
-        game.User.name = data.name;
-        game.User.simbol = data.simbol;
-        game.User.color = data.color;
-        game.User.id = data.id;
-        game.User.userState = data.step;
-        game.User.enemyState = !game.User.userState;
+
+    socket.on('disconnect', (count) =>{
+        Online = count;
     });
-    socket.on('click', (user) => {
-        game.setData(
-            user, user.data, user.positionOnBlock
-        );
+
+    socket.on('win', (simbol) => {
+        User.isWin = simbol;
+    });
+
+    socket.on('message', (data, count) => {
+        User.set(data);
+        Online = count;
+    });
+
+    socket.on('click', (data) => {
+        Grid.set(data.step, data.simbol, data.color);
     });
     </script>
-    <script type="text/javascript" src="js/core.js"></script>
+
+    <script type="text/javascript" src="js/сore.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
 </body>
 

@@ -18,13 +18,13 @@ function generateUser(id) {
         data.name = 'User' + counter;
         data.simbol = 'X';
         data.color = '#52FF37';
-        data.step = true;
+        data.isMove = true;
         ++counter;
     } else if (counter == 2) {
         data.name = 'User' + counter;
         data.simbol = 'O';
         data.color = '#FF1E00';
-        data.step = false;
+        data.isMove = false;
         counter = 1;
     }
     inGame.push({ id: id, name: data.name })
@@ -35,22 +35,33 @@ function generateUser(id) {
 
 io.on('connection', function(socket) {
 
-    socket.send(generateUser(socket.id));
-    console.log('(connected):', socket.id);
+    // once send Data for User who connect to the server
+    socket.send(generateUser(socket.id), inGame.length);
+    socket.emit('connection', inGame.length)
+
+    console.log('Connected :', socket.id);
+
     console.log(inGame);
-    /*socket.broadcast.emit('click', User); */
+
     // for all users
-    socket.on('click', (User) => {
-    	// io.emit('click', User);
-    	socket.broadcast.emit('click', User);
+    socket.on('click', (Data) => {
+        // io.emit('click', User);
+        socket.broadcast.emit('click', Data);
     });
 
-
+    socket.on('win', (simbol) => {
+        // io.emit('click', User);
+        socket.broadcast.emit('win', simbol);
+    });
+    
+    socket.broadcast.emit('disconnect', inGame.length-1);
     socket.on('disconnect', () => {
+        // here will be the function which will --count of users in game
         inGame = inGame.filter(el => {
             if (el.id != socket.id) return el;
         });
-        console.log('User disconnected');
+        // say all users to --counter of onlineCounter;
+        console.log('Disconnected :', socket.id);
         console.log(inGame);
     });
 });

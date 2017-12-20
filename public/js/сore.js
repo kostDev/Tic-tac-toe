@@ -116,9 +116,9 @@ const Draw = {
     win: function() {
         if (User.isWin) {
             if (User.isWin === User.simbol) {
-                Draw.text(100, 25, "#3A4671", "You Win!", "25pt");
+                Draw.text(130, 25, "#FFA056", "You Win!", "25pt");
             } else {
-                Draw.text(100, 25, "#9D4671", "You Lose!", "25pt");
+                Draw.text(130, 25, "#B23A3B", "You Lose!", "25pt");
             }
             User.gameEnd = true;
         }
@@ -138,7 +138,6 @@ function Update() {
         socket.emit('win', User.simbol);
     }
     Draw.online(20, 20, "10pt", '#CA6811', Online);
-
     if (!Draw.win(winArr)) {
         setTimeout(function() {
             requestAnimationFrame(Update);
